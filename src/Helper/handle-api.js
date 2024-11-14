@@ -2,8 +2,8 @@ import axios from "axios";
 import Swal from "sweetalert2";
 
 // export const  URL = `${process.env.BASE_URL}`;
-// export const  URL = `http://localhost:3000`;
-export const  URL = `https://api.wildman.tecnavis.com`;
+export const  URL = `http://localhost:3000`;
+// export const  URL = `https://api.wildman.tecnavis.com`;
 //delete customerorder
 export const deleteCustomerOrder = async (id) => {
   const result = await Swal.fire({

@@ -79,7 +79,6 @@ const RecentOrder = () => {
                   <th>Customer</th>
                   <th>Order Date</th>
                   <th>Payment Method</th>
-                  <th>Shop Name</th>
                   <th>Total Amount</th>
                   <th>Status</th>
                 </tr>
@@ -92,7 +91,6 @@ const RecentOrder = () => {
                       <td>{data.customerName || "N/A"}</td>
                       <td>{data.orderDate ? formatDate(data.orderDate) : "N/A"}</td>
                       <td>{data.paymentMethod || "N/A"}</td>
-                      <td>{data.shopName}</td>
                       <td>{`$${data.totalAmount || "N/A"}`}</td>
                       <td>
                         <span className="badge bg-success">

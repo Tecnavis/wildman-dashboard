@@ -74,11 +74,11 @@ const AppsPart = () => {
                 Stock List Report
               </NavLink>
             </li> */}
-            <li className="sidebar-dropdown-item">
+            {/* <li className="sidebar-dropdown-item">
               <NavLink to="/purchaseditem" className="sidebar-link" onClick={handleSubNavLinkClick}>
                 Purchase Report 
               </NavLink>
-            </li>
+            </li> */}
             <li className="sidebar-dropdown-item">
               <NavLink to="/returnproduct" className="sidebar-link" onClick={handleSubNavLinkClick}>
                 Return Products Report
@@ -89,11 +89,11 @@ const AppsPart = () => {
                Customer Order Management
               </NavLink>
             </li>
-            <li className="sidebar-dropdown-item">
+            {/* <li className="sidebar-dropdown-item">
               <NavLink to="/salesorders" className="sidebar-link" onClick={handleSubNavLinkClick}>
                Sales Order Management
               </NavLink>
-            </li>
+            </li> */}
           </ul>
         </li>
         <li className="sidebar-dropdown-item">
@@ -118,16 +118,16 @@ const AppsPart = () => {
               All Customer
             </NavLink>
           </li>
-            <li className="sidebar-dropdown-item">
+            {/* <li className="sidebar-dropdown-item">
               <NavLink to="/supplier" className="sidebar-link" onClick={handleSubNavLinkClick}>
                 All Suppliers
               </NavLink>
-            </li>
-            <li className="sidebar-dropdown-item">
+            </li> */}
+            {/* <li className="sidebar-dropdown-item">
               <NavLink to="/warehouse" className="sidebar-link" onClick={handleSubNavLinkClick}>
                 All Warehouse
               </NavLink>
-            </li>
+            </li> */}
             <li className="sidebar-dropdown-item">
               <NavLink to="/allEmployee" className="sidebar-link" onClick={handleSubNavLinkClick}>
                 All Employee
@@ -168,11 +168,11 @@ const AppsPart = () => {
                 Add Product
               </NavLink>
             </li> */}
-            <li className="sidebar-dropdown-item">
+            {/* <li className="sidebar-dropdown-item">
               <NavLink to="/allorder" className="sidebar-link" onClick={handleSubNavLinkClick}>
                 Order Product
               </NavLink>
-            </li>
+            </li> */}
             <li className="sidebar-dropdown-item">
               <NavLink to="/allProduct" className="sidebar-link" onClick={handleSubNavLinkClick}>
                 All Product

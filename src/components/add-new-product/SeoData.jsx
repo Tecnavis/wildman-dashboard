@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { filterSubCategory, fetchMainCategory, URL, fetchWarehouses } from "../../Helper/handle-api";
+import { filterSubCategory, fetchMainCategory, URL } from "../../Helper/handle-api";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { useForm } from "../../Helper/useForm";
@@ -16,12 +16,12 @@ const ProductData = () => {
   const [selectedColor, setSelectedColor] = useState(""); 
   const [tags, setTags] = useState([]);
   const [selectedTags, setSelectedTags] = useState(""); 
-  const [warehouses, setWarehouses] = useState([]);
+  // const [warehouses, setWarehouses] = useState([]);
   useEffect(() => {
     fetchSizes();
     fetchColors();
     fetchTags();
-    getWarehouses();
+    // getWarehouses();
     const getMainCategories = async () => {
       const categories = await fetchMainCategory();
       setMainCategories(categories);
@@ -108,17 +108,17 @@ const ProductData = () => {
       });
   }}
 //fetch warehouses
-const getWarehouses = async () => {
-  try {
-    const warehouseData = await fetchWarehouses();
-    setWarehouses(warehouseData);
-  } catch (error) {
-    console.error("Error fetching warehouses:", error);
-  }
-};
+// const getWarehouses = async () => {
+//   try {
+//     const warehouseData = await fetchWarehouses();
+//     setWarehouses(warehouseData);
+//   } catch (error) {
+//     console.error("Error fetching warehouses:", error);
+//   }
+// };
   const [values, handleChange] = useForm({
     tag:'',
-    warehouse: '',
+    // warehouse: '',
     returnpolicy: '',
     mainCategory: '',
     subCategory: '',
@@ -144,7 +144,7 @@ const handleSubmit = async (e) => {
   
   // Check if any required fields are empty
   if (!values.mainCategory || !values.subCategory || !values.modelNo || !values.date || 
-      !values.title || !values.description || !values.price || !values.warehouse ||  !values.price ) {
+      !values.title || !values.description || !values.price  ||  !values.price ) {
     
     Swal.fire({
       icon: 'warning',
@@ -157,7 +157,7 @@ const handleSubmit = async (e) => {
   const formData = new FormData();
   
   // Add the warehouse name instead of Id
-  const warehouseName = warehouses.find(warehouse => warehouse._id === values.warehouse)?.warehouse;
+  // const warehouseName = warehouses.find(warehouse => warehouse._id === values.warehouse)?.warehouse;
   // Add the category, color, and tag names instead of IDs
   const mainCategoryName = mainCategories.find(category => category._id === selectedMainCategory)?.name;
   const subCategoryName = subCategories.find(subcategory => subcategory._id === selectedSubCategory)?.subcategory;
@@ -169,11 +169,11 @@ const handleSubmit = async (e) => {
   formData.append("subCategory", subCategoryName);
   formData.append("color", colorName);
   formData.append("tag", tagName);
-  formData.append("warehouse", warehouseName);
+  // formData.append("warehouse", warehouseName);
 
   // Append other form values
   Object.keys(values).forEach(key => {
-    if (key !== 'mainCategory' && key !== 'subCategory' && key !== 'color' && key !== 'tag' && key !== 'warehouse') {
+    if (key !== 'mainCategory' && key !== 'subCategory' && key !== 'color' && key !== 'tag' ) {
       formData.append(key, values[key]);
     }
   });
@@ -280,17 +280,17 @@ const handleSubmit = async (e) => {
 
         <div className="row g-3">
           <label htmlFor="Warehouse" className="col-md-2 col-form-label col-form-label-sm">
-            Warehouse 
+            Return policy 
           </label>
-          <div className="col-md-5">
+          {/* <div className="col-md-5">
             <select className="form-control form-control-sm" onChange={handleChange} name="warehouse"   >
               <option value="">Select Warehouse</option>
               {warehouses.map((warehouse) => (
                 <option key={warehouse._id} value={warehouse._id}>{warehouse.name}</option>
               ))}
             </select>
-          </div>
-          <div className="col-md-5">
+          </div> */}
+          <div className="col-md-10">
            <select className="form-control form-control-sm" onChange={handleChange} name="returnpolicy" value={values.returnpolicy}  >
               <option value="">Select Return Policy</option>
               <option value="Yes">Yes</option>

@@ -84,14 +84,13 @@ const OrderListTable = () => {
   return (
     <>
       <OverlayScrollbarsComponent>
-        <br/><br/>
         <h6>All Customer Orders</h6>
         <Table className="table table-dashed table-hover digi-dataTable all-product-table table-striped" id="allProductTable">
           <thead>
             <tr>
               <th>Order ID</th>
               <th>Customer</th>
-              <th>Shop Name</th>
+              <th>Address</th>
               <th>Product</th>
               <th>Price</th>
               <th>Total Price</th>
@@ -112,7 +111,7 @@ const OrderListTable = () => {
                   <td rowSpan={data.products?.length || 1}>
                     {data.customerName}
                   </td>
-                  <td rowSpan={data.products?.length || 1}>{data.shopName}<br/> {data.address}</td>
+                  <td rowSpan={data.products?.length || 1}> {data.address}</td>
                   <td>
                     {data.products?.[0]?.productDetails?.mainCategory || "N/A"} X {data.products?.[0]?.sizeDetails?.quantity || "N/A"}
                   </td>

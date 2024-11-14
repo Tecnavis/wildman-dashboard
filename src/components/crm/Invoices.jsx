@@ -67,7 +67,7 @@ const Invoices = () => {
               <tr>
                 <th>Order ID</th>
                 <th>Client</th>
-                <th>Shop Name</th>
+                {/* <th>Shop Name</th> */}
                 <th>Order Date</th>
                 <th>Total</th>
                 <th>Status</th>
@@ -78,7 +78,7 @@ const Invoices = () => {
                 <tr key={order.orderId}>
                   <td>{order.orderId}</td>
                   <td>{order.customerName}</td>
-                  <td>{order.shopName}</td>
+                  {/* <td>{order.shopName}</td> */}
                   <td>{formatDate(order.orderDate)}</td>
                   <td>${order.totalAmount}</td>
                   <td>
@@ -100,7 +100,7 @@ const Invoices = () => {
                 <tr key={`customer-${order.orderId}`}>
                   <td>{order.orderId}</td>
                   <td>{order.customerName}</td>
-                  <td>{order.shopName}</td>
+                  {/* <td>{order.shopName}</td> */}
                   <td>{formatDate(order.orderDate)}</td>
                   <td>${order.totalAmount}</td>
                   <td>

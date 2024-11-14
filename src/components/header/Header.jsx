@@ -81,7 +81,7 @@ const Header = () => {
             )}
           </div>
           <Link
-            to="https://milagro.tecnavis.com/shop"
+            to="https://wildman.tecnavis.com/"
             target="_blank"
             className="btn btn-sm btn-primary site-view-btn"
           >

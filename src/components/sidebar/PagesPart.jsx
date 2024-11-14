@@ -138,15 +138,15 @@ const PagesPart = () => {
           </ul>
 
         </li> */}
-        <li className="sidebar-dropdown-item">
+        {/* <li className="sidebar-dropdown-item">
           <NavLink to="/customercreate" className="sidebar-link">
             <span className="nav-icon">
               <i className="fa-light fa-user-plus"></i>
             </span>{' '}
             <span className="sidebar-txt">Customer</span>
           </NavLink>
-        </li>
-        <li className="sidebar-dropdown-item">
+        </li> */}
+        {/* <li className="sidebar-dropdown-item">
           <NavLink to="/createform" className="sidebar-link">
             <span className="nav-icon">
               <i className="fa-light fa-truck-ramp-box"></i>
@@ -161,7 +161,7 @@ const PagesPart = () => {
             </span>{' '}
             <span className="sidebar-txt">Warehouse</span>
           </NavLink>
-        </li>
+        </li> */}
         <li className="sidebar-dropdown-item">
           <NavLink to="/addNewProduct" className="sidebar-link">
             <span className="nav-icon">

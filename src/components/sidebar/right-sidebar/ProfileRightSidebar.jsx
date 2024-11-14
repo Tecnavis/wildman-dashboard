@@ -77,22 +77,22 @@ const ProfileRightSidebar = () => {
                 Profile
               </Link>
             </li>
-            <li>
+            {/* <li>
               <Link className="dropdown-item" to="/chat">
                 <span className="dropdown-icon">
                   <i className="fa-regular fa-message-lines"></i>
                 </span>{" "}
                 Message
               </Link>
-            </li>
-            <li>
+            </li> */}
+            {/* <li>
               <Link className="dropdown-item" to="/shoppingbag">
                 <span className="dropdown-icon">
                   <i className="fa-regular fa-cart-plus"></i>
                 </span>{" "}
                 Shopping Bag
               </Link>
-            </li>
+            </li> */}
             <li>
               <Link className="dropdown-item" to="/task">
                 <span className="dropdown-icon">

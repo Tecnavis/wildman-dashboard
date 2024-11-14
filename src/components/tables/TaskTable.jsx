@@ -98,67 +98,10 @@ const TaskTable = () => {
   
   return (
     <>
-      <OverlayScrollbarsComponent>
-        <table className="table table-dashed table-hover digi-dataTable task-table table-striped" id="taskTable">
-          <thead>
-            <tr>
-              <th className="no-sort">
-                <div className="form-check">
-                  <input className="form-check-input" type="checkbox" id="markAllLeads" />
-                </div>
-              </th>
-              <th>Order ID</th>
-              <th>Name</th>
-              <th>Shop Name</th>
-              <th>Delivery Status</th>
-              <th>Delivery Date</th>
-              <th>Staff Name</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {currentData.map((order) => (
-              <tr key={order._id}>
-                <td>
-                  <div className="form-check">
-                    <input className="form-check-input" type="checkbox" />
-                  </div>
-                </td>
-
-                <td>{order.orderId}</td>
-                <td>
-                  <Link
-                    role="button"
-                    className="text-decoration-underline"
-                    data-bs-toggle="modal"
-                    data-bs-target="#viewTaskModal"
-                  >
-                    {order.customerName}
-                  </Link>
-                </td>
-                <td>{order.shopName}</td>
-                <td>{order.deliveryStatus}</td>
-                <td>{order.deliveryDate ? new Date(order.deliveryDate).toDateString() : 'Not Delivered'}</td>
-                <td>
-                  <div className="avatar-box">{`${order.adminName  || Admin} `}</div>
-                </td>
-                <td>
-                  <div className="btn-box">
-                    <Button
-                      className="btn btn-primary btn-sm"
-                      onClick={() => handleDelivered(order._id)} // Trigger status update
-                      disabled={order.deliveryStatus === 'Delivered'} // Disable if already delivered
-                    >
-                      Delivered
-                    </Button>
-                  </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </OverlayScrollbarsComponent>
+      {/* <OverlayScrollbarsComponent> */}
       <Task/>
+      {/* </OverlayScrollbarsComponent> */}
+     
       <PaginationSection
         currentPage={currentPage}
         totalPages={totalPages}

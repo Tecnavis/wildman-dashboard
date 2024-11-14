@@ -1,0 +1,23 @@
+.close-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: #dc3545; /* Bootstrap's danger color */
+    font-size: 1.2rem; /* Adjust font size */
+    transition: color 0.3s;
+  }
+  
+  .close-btn:hover {
+    color: #b71c1c; /* Darker shade on hover */
+  }
+  
+  .close-btn:focus {
+    outline: none; /* Remove outline */
+  }
+  
+  /* Optional: Adding padding and border radius for better appearance */
+  .close-btn {
+    padding: 0.5rem;
+    border-radius: 5px; /* Rounded corners */
+  }
+  

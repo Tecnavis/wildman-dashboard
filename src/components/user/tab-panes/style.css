@@ -1,0 +1,53 @@
+.invoice-modal-body {
+    font-family: Arial, sans-serif; /* Use a modern font */
+    padding: 20px; /* Add padding for breathing space */
+}
+
+.shop-address {
+    background: #f8f9fa; /* Light background for contrast */
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.logo img {
+    max-width: 100%; /* Responsive logo */
+    height: auto;
+}
+
+.part-txt p {
+    margin: 0; /* Remove default margins */
+    line-height: 1.5; /* Improve readability */
+}
+
+.table {
+    margin-top: 20px; /* Add spacing above table */
+}
+
+.table-light {
+    background-color: #e9ecef; /* Light background for header */
+}
+
+.table-bordered {
+    border: 1px solid #dee2e6; /* Border for table */
+}
+
+.table-bordered th,
+.table-bordered td {
+    border: 1px solid #dee2e6; /* Border for each cell */
+}
+
+h4 {
+    font-size: 1.25rem; /* Adjust font size */
+    font-weight: bold; /* Make it bold */
+    border-bottom: 0.5px solid #007bff; /* Add a blue underline for headings */
+    padding-bottom: 10px; /* Space below heading */
+}
+
+.mb-4 {
+    margin-bottom: 1.5rem; /* Standard margin for bottom spacing */
+}
+
+.customer-details {
+    text-align: right; /* Align customer details to the right */
+}

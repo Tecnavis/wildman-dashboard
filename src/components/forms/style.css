@@ -1,0 +1,92 @@
+.card {
+    border-radius: 8px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+  }
+  
+  .card-header {
+    background-color: #f5f5f5;
+    font-size: 1.25rem;
+    font-weight: bold;
+    padding: 10px;
+  }
+  
+  .card-body {
+    padding: 20px;
+    border: 1px solid #e0e0e0;
+    border-top: none;
+  }
+  
+  .dropzone {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px ;
+    border-radius: 4px;
+    padding: 20px;
+    cursor: pointer;
+    text-align: center;
+  }
+  
+  .dropzone-active {
+    border-color: #17a2b8;
+    background-color: #f1f8ff;
+  }
+  
+  .form-section {
+    margin-top: 20px;
+  }
+  
+  .form-group {
+    margin-bottom: 15px;
+    /* width: 100%; */
+    margin-inline: 20px;
+  }
+  
+  .form-input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #ced4da;
+    font-size: 1rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    resize: none; /* Prevents resizing for the textarea */
+  }
+  
+  .form-input:focus {
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.25);
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600; /* Slightly bolder for better visibility */
+  }
+  
+  .banner-img {
+    width: 110px;
+    height: 91px;
+  }
+  .modal-content {
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Shadow for depth */
+}
+
+.modal-header {
+    background-color: #007bff; /* Bootstrap primary color */
+    color: white; /* White text */
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: flex-end; /* Align buttons to the right */
+}
+.banner-description {
+    margin: 0;
+    padding: 0.5rem;
+    line-height: 1.5; /* For improved readability */
+    max-width: 200px; /* Adjust this value to set a maximum width */
+    white-space: normal; /* Allow the text to wrap */
+    overflow-wrap: break-word; /* Ensure long words break properly */
+  }
+  

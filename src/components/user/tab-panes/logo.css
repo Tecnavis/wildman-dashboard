@@ -1,0 +1,14 @@
+.logo-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+}
+.logo-container img {
+    width: 100px;
+    height: auto;
+    margin-bottom: 10px;
+}
+.logo-container input {
+    cursor: pointer;
+}

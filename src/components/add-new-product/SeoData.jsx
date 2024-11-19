@@ -16,7 +16,7 @@ const ProductData = () => {
   const [selectedColor, setSelectedColor] = useState(""); 
   const [tags, setTags] = useState([]);
   const [selectedTags, setSelectedTags] = useState(""); 
-  // const [warehouses, setWarehouses] = useState([]);
+
   useEffect(() => {
     fetchSizes();
     fetchColors();
@@ -107,18 +107,20 @@ const ProductData = () => {
         text: 'Error fetching tags!',
       });
   }}
-//fetch warehouses
-// const getWarehouses = async () => {
-//   try {
-//     const warehouseData = await fetchWarehouses();
-//     setWarehouses(warehouseData);
-//   } catch (error) {
-//     console.error("Error fetching warehouses:", error);
-//   }
-// };
+  // compartment: { type: String, required: true },
+
   const [values, handleChange] = useForm({
     tag:'',
-    // warehouse: '',
+    rating:"",
+    meterial: '',
+    outermeterial: '',
+    discount: '',
+    gst: '',
+    brand: '',
+    height: '',
+    weight: '',
+    warrenty: '',
+    compartment: '',
     returnpolicy: '',
     mainCategory: '',
     subCategory: '',
@@ -155,10 +157,6 @@ const handleSubmit = async (e) => {
   }
 
   const formData = new FormData();
-  
-  // Add the warehouse name instead of Id
-  // const warehouseName = warehouses.find(warehouse => warehouse._id === values.warehouse)?.warehouse;
-  // Add the category, color, and tag names instead of IDs
   const mainCategoryName = mainCategories.find(category => category._id === selectedMainCategory)?.name;
   const subCategoryName = subCategories.find(subcategory => subcategory._id === selectedSubCategory)?.subcategory;
   const colorName = colors.find(color => color._id === selectedColor)?.value;
@@ -244,21 +242,137 @@ const handleSubmit = async (e) => {
             </div>
           </div>
         </div>
+        <div className="row g-3 mb-3">
+          <label htmlFor="title" className="col-md-2 col-form-label col-form-label-sm">
+            Brand
+          </label>
+          <div className="col-md-10">
+            <input
+              type="text"
+              className="form-control form-control-sm"
+              id="brand"
+              name="brand"
+              placeholder="Brand"
+              onChange={handleChange}
+            />
+            </div>
+          </div>
+        <div className="row g-3 mb-3">
+          <label htmlFor="title" className="col-md-2 col-form-label col-form-label-sm">
+            Meterial
+          </label>
+          <div className="col-md-5">
+            <input
+              type="text"
+              className="form-control form-control-sm"
+              id="meterial"
+              name="meterial"
+              placeholder="Meterial"
+              onChange={handleChange}
+            />
+            </div>
+            <div className="col-md-5">
+            <input
+              type="text"
+              className="form-control form-control-sm"
+              id="outermeterial"
+              name="outermeterial"
+              placeholder="Outer Meterial"
+              onChange={handleChange}
+            />
+            </div>
+          </div>
+          <div className="row g-3 mb-3">
+          <label htmlFor="title" className="col-md-2 col-form-label col-form-label-sm">
+            Heigh & Weight
+          </label>
+          <div className="col-md-5">
+            <input
+              type="text"
+              className="form-control form-control-sm"
+              id="height"
+              name="height"
+              placeholder="Height"
+              onChange={handleChange}
+            />
+            </div>
+            <div className="col-md-5">
+            <input
+              type="text"
+              className="form-control form-control-sm"
+              id="weight"
+              name="weight"
+              placeholder="Weight"
+              onChange={handleChange}
+            />
+            </div>
+          </div>
+
+          <div className="row g-3 mb-3">
+          <label htmlFor="title" className="col-md-2 col-form-label col-form-label-sm">
+            Compartment
+          </label>
+          <div className="col-md-10">
+            <input
+              type="text"
+              className="form-control form-control-sm"
+              id="compartment"
+              name="compartment"
+              placeholder="Compartment"
+              onChange={handleChange}
+            />
+            </div>
+            </div>
+          <div className="row g-3 mb-3">
+          <label htmlFor="title" className="col-md-2 col-form-label col-form-label-sm">
+            Warrenty & GST
+          </label>
+          <div className="col-md-5">
+            <input
+              type="text"
+              className="form-control form-control-sm"
+              id="warrenty"
+              name="warrenty"
+              placeholder="Warrenty"
+              onChange={handleChange}
+            />
+            </div>
+            <div className="col-md-5">
+            <input
+              type="number"
+              className="form-control form-control-sm"
+              id="gst"
+              name="gst"
+              placeholder="GST"
+              onChange={handleChange}
+            />
+            </div>
+          </div>
 
         <div className="row g-3 mb-3">
           <label htmlFor="price" className="col-md-2 col-form-label col-form-label-sm">
             Price ($)
           </label>
-          <div className="col-md-10">
+          <div className="col-md-5">
             <input
               type="number"
               className="form-control form-control-sm"
               id="price"
               name="price"
-              placeholder="Price"
+              placeholder="MRP Price"
               onChange={handleChange}
             />
           </div>
+          <div className="col-md-5">
+            <input
+              type="number"
+              className="form-control form-control-sm"
+              id="discount"
+              name="discount"
+              placeholder="Discount %"
+              onChange={handleChange}
+            />
+        </div>
         </div>
 
         <div className="row g-3">
@@ -351,6 +465,21 @@ const handleSubmit = async (e) => {
               id="description"
               name="description"
               placeholder="Description"
+              onChange={handleChange}
+            />
+          </div>
+        </div>
+        <div className="row g-3">
+          <label htmlFor="description" className="col-md-2 col-form-label col-form-label-sm">
+            Rating
+          </label>
+          <div className="col-md-10">
+            <input
+              className="form-control form-control-sm"
+              type="number"
+              id="description"
+              name="rating"
+              placeholder="Rating"
               onChange={handleChange}
             />
           </div>

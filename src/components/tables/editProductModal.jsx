@@ -3,7 +3,7 @@ import { Modal, Button } from "react-bootstrap";
 import {
   filterSubCategory,
   fetchMainCategory,
-  fetchWarehouses,
+  // fetchWarehouses,
   fetchProductById,
   URL,
 } from "../../Helper/handle-api";
@@ -15,7 +15,7 @@ const EditProductModal = ({ productId, show, onClose, onSave }) => {
   const [subCategories, setSubCategories] = useState([]);
   const [sizes, setSizes] = useState([]);
   const [colors, setColors] = useState([]);
-  const [warehouses, setWarehouses] = useState([]);
+  // const [warehouses, setWarehouses] = useState([]);
   const [tags, setTags] = useState([]);
   const [formValues, setFormValues] = useState({});
   const [images, setImages] = useState([]);
@@ -39,9 +39,6 @@ const EditProductModal = ({ productId, show, onClose, onSave }) => {
 
         const tagsData = await axios.get(`${URL}/attribute/tag`);
         setTags(tagsData.data);
-
-        const warehousesData = await fetchWarehouses();
-        setWarehouses(warehousesData);
 
         if (productId) {
           const productData = await fetchProductById(productId);
@@ -177,8 +174,7 @@ const EditProductModal = ({ productId, show, onClose, onSave }) => {
       !formValues.date ||
       !formValues.title ||
       !formValues.description ||
-      !formValues.price ||
-      !formValues.warehouse
+      !formValues.price 
     ) {
       Swal.fire({
         icon: "warning",
@@ -236,7 +232,9 @@ const EditProductModal = ({ productId, show, onClose, onSave }) => {
       });
     }
   };
-
+  // meterial: { type: String, required: true },
+  // outermeterial: { type: String, },
+  // brand: { type: String, required: true },
   return (
     <Modal show={show} onHide={onClose} size="lg" centered>
       <Modal.Header closeButton>
@@ -289,6 +287,96 @@ const EditProductModal = ({ productId, show, onClose, onSave }) => {
             />
           </div>
           <div className="mb-3">
+            <label>Discount</label>
+            <input
+              type="number"
+              value={formValues.discount}
+              onChange={handleInputChange}
+              name="discount"
+              className="form-control"
+            />
+          </div>
+          <div className="mb-3">
+            <label>Warrenty</label>
+            <input
+              type="text"
+              value={formValues.warrenty}
+              onChange={handleInputChange}
+              name="warrenty"
+              className="form-control"
+            />  
+          </div>
+          <div className="mb-3">
+            <label>GST</label>
+            <input
+              type="number"
+              value={formValues.gst}
+              onChange={handleInputChange}
+              name="gst"
+              className="form-control"
+            />
+          </div>
+          <div className="mb-3">
+            <label>Height</label>
+            <input
+              type="text"
+              value={formValues.height}
+              onChange={handleInputChange}
+              name="height"
+              className="form-control"
+            />
+          </div>
+          <div className="mb-3">
+            <label>Weight</label>
+            <input
+              type="text"
+              value={formValues.weight}
+              onChange={handleInputChange}
+              name="weight"
+              className="form-control"
+            />
+          </div>
+          <div className="mb-3">
+            <label>Meterial</label>
+            <input
+              type="text"
+              value={formValues.meterial}
+              onChange={handleInputChange}
+              name="meterial"
+              className="form-control"
+            />
+          </div>
+          <div className="mb-3">
+            <label>Outer Meterial</label>
+            <input
+              type="text"
+              value={formValues.outermeterial}
+              onChange={handleInputChange}
+              name="outermeterial"
+              className="form-control"
+            />
+          </div>
+          <div className="mb-3">
+            <label>Brand</label>
+            <input
+              type="text" 
+              value={formValues.brand}
+              onChange={handleInputChange}
+              name="brand"
+              className="form-control"
+            />
+          </div>
+          <div className="mb-3">
+            <label>Compartment</label>
+            <input
+              type="text"
+              value={formValues.compartment}
+              onChange={handleInputChange}
+              name="compartment"
+              className="form-control"
+            />
+          </div>
+          <div className="mb-3">
             <label>Model No</label>
             <input
               type="text"
@@ -298,6 +386,17 @@ const EditProductModal = ({ productId, show, onClose, onSave }) => {
               className="form-control"
             />
           </div>
+          <div className="mb-3">
+            <label>Rating</label>
+            <input
+              type="number"
+              value={formValues.rating}
+              onChange={handleInputChange}
+              name="rating"
+              className="form-control"
+            />
+          </div>
+
           <div className="mb-3">
             <label>Color</label>
             <select
@@ -314,7 +413,7 @@ const EditProductModal = ({ productId, show, onClose, onSave }) => {
               ))}
             </select>
           </div>
-          <div className="mb-3">
+          {/* <div className="mb-3">
             <label>Warehouse</label>
             <select
               value={formValues.warehouse}
@@ -329,7 +428,7 @@ const EditProductModal = ({ productId, show, onClose, onSave }) => {
                 </option>
               ))}
             </select>
-          </div>
+          </div> */}
           <div className="mb-3">
             <label>Tag</label>
             <select

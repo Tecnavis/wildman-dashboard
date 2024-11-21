@@ -326,6 +326,7 @@ const EditProductModal = ({ productId, show, onClose, onSave }) => {
               className="form-control"
             />
           </div>
+          
           <div className="mb-3">
             <label>Weight</label>
             <input
@@ -333,6 +334,16 @@ const EditProductModal = ({ productId, show, onClose, onSave }) => {
               value={formValues.weight}
               onChange={handleInputChange}
               name="weight"
+              className="form-control"
+            />
+          </div>
+          <div className="mb-3">
+            <label>Video Link</label>
+            <input
+              type="text"
+              value={formValues.videoLink}
+              onChange={handleInputChange}
+              name="videoLink"
               className="form-control"
             />
           </div>

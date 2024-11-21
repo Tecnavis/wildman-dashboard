@@ -16,19 +16,19 @@ const ProductData = () => {
   const [selectedColor, setSelectedColor] = useState(""); 
   const [tags, setTags] = useState([]);
   const [selectedTags, setSelectedTags] = useState(""); 
-
+  
+//fetch datas
   useEffect(() => {
     fetchSizes();
     fetchColors();
     fetchTags();
-    // getWarehouses();
     const getMainCategories = async () => {
       const categories = await fetchMainCategory();
       setMainCategories(categories);
     };
     getMainCategories();
   }, []);
-
+//main datachange
   const handleMainCategoryChange = async (event) => {
     const selectedCategory = event.target.value;
     setSelectedMainCategory(selectedCategory);
@@ -107,8 +107,6 @@ const ProductData = () => {
         text: 'Error fetching tags!',
       });
   }}
-  // compartment: { type: String, required: true },
-
   const [values, handleChange] = useForm({
     tag:'',
     rating:"",
@@ -131,6 +129,7 @@ const ProductData = () => {
     description: '',
     price: '',
     color: '', 
+    videoLink: '', // Add this
   });
 
   const handleImageChange = (e) => {
@@ -142,12 +141,10 @@ const handleCoverImageChange = (e) => {
 };
 
 const handleSubmit = async (e) => {
-  e.preventDefault();
-  
+  e.preventDefault(); 
   // Check if any required fields are empty
   if (!values.mainCategory || !values.subCategory || !values.modelNo || !values.date || 
-      !values.title || !values.description || !values.price  ||  !values.price ) {
-    
+      !values.title || !values.description || !values.price  ||  !values.price ) {   
     Swal.fire({
       icon: 'warning',
       title: 'Missing fields',
@@ -155,19 +152,17 @@ const handleSubmit = async (e) => {
     });
     return;
   }
-
   const formData = new FormData();
   const mainCategoryName = mainCategories.find(category => category._id === selectedMainCategory)?.name;
   const subCategoryName = subCategories.find(subcategory => subcategory._id === selectedSubCategory)?.subcategory;
   const colorName = colors.find(color => color._id === selectedColor)?.value;
   const tagName = tags.find(tag => tag._id === selectedTags)?.value;
-
   // Append category names, color name, and tag name
   formData.append("mainCategory", mainCategoryName);
   formData.append("subCategory", subCategoryName);
   formData.append("color", colorName);
   formData.append("tag", tagName);
-  // formData.append("warehouse", warehouseName);
+  formData.append('videoLink', values.videoLink.trim()); // Ensure it's a trimmed string
 
   // Append other form values
   Object.keys(values).forEach(key => {
@@ -199,8 +194,6 @@ const handleSubmit = async (e) => {
     });
   }
 };
-
-
   return (
     <div className="panel">
       <form onSubmit={handleSubmit}>
@@ -282,6 +275,24 @@ const handleSubmit = async (e) => {
             />
             </div>
           </div>
+          <div className="row g-3 mb-3">
+  <label htmlFor="videoLink" className="col-md-2 col-form-label col-form-label-sm">
+    Product Video Link
+  </label>
+  <div className="col-md-10">
+  <input
+  type="text"
+  className="form-control form-control-sm"
+  id="videoLink"
+  name="videoLink"
+  placeholder="Enter video link"
+  value={values.videoLink} // Ensure it's a single string
+  onChange={(e) => handleChange(e)}
+/>
+
+  </div>
+</div>
+
           <div className="row g-3 mb-3">
           <label htmlFor="title" className="col-md-2 col-form-label col-form-label-sm">
             Heigh & Weight
@@ -396,14 +407,6 @@ const handleSubmit = async (e) => {
           <label htmlFor="Warehouse" className="col-md-2 col-form-label col-form-label-sm">
             Return policy 
           </label>
-          {/* <div className="col-md-5">
-            <select className="form-control form-control-sm" onChange={handleChange} name="warehouse"   >
-              <option value="">Select Warehouse</option>
-              {warehouses.map((warehouse) => (
-                <option key={warehouse._id} value={warehouse._id}>{warehouse.name}</option>
-              ))}
-            </select>
-          </div> */}
           <div className="col-md-10">
            <select className="form-control form-control-sm" onChange={handleChange} name="returnpolicy" value={values.returnpolicy}  >
               <option value="">Select Return Policy</option>

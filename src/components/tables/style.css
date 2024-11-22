@@ -51,4 +51,14 @@
     margin-top: 10px;
     font-weight: bold;
   }
+  .starred {
+    color: gold;
+  }
+  .read-more {
+    color: blue;
+    cursor: pointer;
+  }
+  .read-more:hover {
+    text-decoration: underline;
+  }
   

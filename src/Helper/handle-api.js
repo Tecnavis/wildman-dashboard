@@ -4,6 +4,17 @@ import Swal from "sweetalert2";
 // export const  URL = `${process.env.BASE_URL}`;
 export const  URL = `http://localhost:3000`;
 // export const  URL = `https://api.wildman.tecnavis.com`;
+//delete review
+
+export const deleteReview = async (id) => {
+  const response = await axios.delete(`${URL}/review/${id}`);
+  return response.data;
+}
+//fetch all reviews
+export const fetchReviews = async () => {
+  const response = await axios.get(`${URL}/review`);
+  return response.data;
+}
 //delete customerorder
 export const deleteCustomerOrder = async (id) => {
   const result = await Swal.fire({

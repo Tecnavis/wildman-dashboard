@@ -75,7 +75,7 @@ const HeaderChat = () => {
                 <div className="msg-txt">
                   <span className="name">{message.shopName}</span>
                   <span className="name">{message.productId}</span>
-                  <span className="msg-short">{message.message}</span>
+                  <span className="msg">{message.message}</span>
                   <span className="time">{new Date(message.createdAt).toLocaleTimeString()}</span>
                 </div>
               </Link>

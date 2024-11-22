@@ -16,7 +16,6 @@ const AllCustomerTable = () => {
 
   const [formData, setFormData] = useState({
     name: "",
-    shopname: "",
     phone: "",
     email: "",
     address: "",
@@ -88,7 +87,6 @@ const AllCustomerTable = () => {
     setSelectedCustomer(customer);
     setFormData({
       name: customer.name,
-      shopname: customer.shopname,
       phone: customer.phone,
       email: customer.email,
       address: customer.address,
@@ -164,7 +162,6 @@ const AllCustomerTable = () => {
                 <td>
                   <Link to="#">{customer.name}</Link>
                 </td>
-                <td>{customer.shopname}</td>
                 <td>{customer.phone}</td>
                 <td>
                   <Link to="#">{customer.email}</Link>
@@ -209,17 +206,6 @@ const AllCustomerTable = () => {
                 type="text"
                 name="name"
                 value={formData.name}
-                onChange={handleChange}
-                required
-              />
-            </Form.Group>
-
-            <Form.Group className="mb-3" controlId="formShopName">
-              <Form.Label>Shop Name</Form.Label>
-              <Form.Control
-                type="text"
-                name="shopname"
-                value={formData.shopname}
                 onChange={handleChange}
                 required
               />

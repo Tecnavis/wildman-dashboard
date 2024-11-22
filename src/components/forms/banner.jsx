@@ -27,7 +27,7 @@ const Banner = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!file || !title || !description) {
+    if (!file ) {
         Swal.fire("Error", "Please fill in all required fields.", "error");
       return;
     }

@@ -61,7 +61,7 @@ const Review = () => {
   return (
     <div className="col-12">
       <div className="card">
-        <div className="card-header">Customized Data Table</div>
+        <div className="card-header">Reviews</div>
         <div className="card-body">
           <OverlayScrollbarsComponent>
             <table

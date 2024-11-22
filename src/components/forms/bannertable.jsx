@@ -150,7 +150,7 @@ const BannerTable = () => {
                     onChange={(e) =>
                       setFormData({ ...formData, title: e.target.value })
                     }
-                    required
+                   
                   />
                 </div>
                 <div className="form-group">
@@ -163,7 +163,7 @@ const BannerTable = () => {
                     onChange={(e) =>
                       setFormData({ ...formData, description: e.target.value })
                     }
-                    required
+                    
                   />
                 </div>
                 <div className="form-group">

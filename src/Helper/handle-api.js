@@ -4,8 +4,32 @@ import Swal from "sweetalert2";
 // export const  URL = `${process.env.BASE_URL}`;
 export const  URL = `http://localhost:3000`;
 // export const  URL = `https://api.wildman.tecnavis.com`;
-//delete review
+//update about
+export const updateAbout = async (id, about) => {
+  const response = await axios.put(`${URL}/about/${id}`, about);
+  return response.data;
+}
+//fetch about by id
+export const fetchAboutById = async (id) => {
+  const response = await axios.get(`${URL}/about/${id}`);
+  return response.data;
+}
+//fetch all about
+export const fetchAbout = async () => {
+  const response = await axios.get(`${URL}/about`);
+  return response.data;
+}
+//create about
+export const createAbout = async (about) => {
+  const response = await axios.post(`${URL}/about`, about, {
+    headers: {
+      'Content-Type': 'multipart/form-data', // Important for file uploads
+    },
+  });
+  return response.data;
+};
 
+//delete review
 export const deleteReview = async (id) => {
   const response = await axios.delete(`${URL}/review/${id}`);
   return response.data;

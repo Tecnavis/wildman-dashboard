@@ -66,6 +66,7 @@ import Customercreate from "./components/forms/Customercreate"
 import PurchaseForm from "./components/forms/Purchaseform"
 import Banner from "./components/forms/banner"
 import Review from "./components/tables/reviews"
+import About from "./components/tables/about"
 function App() {
   
   return (
@@ -74,6 +75,7 @@ function App() {
         <Route element={<Layout/>}>
           <Route path="/dashboard" element={<Dashboard/>}/>
           <Route path="/review" element={<Review/>}/>
+          <Route path="/aboutcompany" element={<About/>}/>
           <Route path="/banner" element={<Banner/>}/>
           <Route path="/createform" element={<CreateForm/>}/>
           <Route path="/purchaseform" element={<PurchaseForm/>}/>

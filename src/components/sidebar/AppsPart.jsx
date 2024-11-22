@@ -188,6 +188,16 @@ const AppsPart = () => {
                 Add Banner
               </NavLink>
             </li>
+            <li className="sidebar-dropdown-item">
+              <NavLink to="/review" className="sidebar-link" onClick={handleSubNavLinkClick}>
+                Reviews
+              </NavLink>
+            </li>
+            <li className="sidebar-dropdown-item">
+              <NavLink to="/aboutcompany" className="sidebar-link" onClick={handleSubNavLinkClick}>
+                Company Info
+              </NavLink>
+            </li>
             
 
           </ul>

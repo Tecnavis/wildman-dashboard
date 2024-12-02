@@ -116,6 +116,7 @@ const ProductData = () => {
     gst: '',
     brand: '',
     height: '',
+    length: '',
     weight: '',
     warrenty: '',
     compartment: '',
@@ -127,6 +128,7 @@ const ProductData = () => {
     totalStock: '',
     title: '',
     description: '',
+    about: '',
     price: '',
     color: '', 
     videoLink: '', // Add this
@@ -295,9 +297,9 @@ const handleSubmit = async (e) => {
 
           <div className="row g-3 mb-3">
           <label htmlFor="title" className="col-md-2 col-form-label col-form-label-sm">
-            Heigh & Weight
+          Dimension
           </label>
-          <div className="col-md-5">
+          <div className="col-md-3">
             <input
               type="text"
               className="form-control form-control-sm"
@@ -307,7 +309,17 @@ const handleSubmit = async (e) => {
               onChange={handleChange}
             />
             </div>
-            <div className="col-md-5">
+            <div className="col-md-3">
+            <input
+              type="text"
+              className="form-control form-control-sm"
+              id="length"
+              name="length"
+              placeholder="Length"
+              onChange={handleChange}
+            />
+            </div>
+            <div className="col-md-4">
             <input
               type="text"
               className="form-control form-control-sm"
@@ -467,11 +479,25 @@ const handleSubmit = async (e) => {
               className="form-control form-control-sm"
               id="description"
               name="description"
-              placeholder="Description"
+              placeholder="Simple Description"
               onChange={handleChange}
             />
           </div>
-        </div>
+        </div><br/>
+        <div className="row g-3">
+          <label htmlFor="description" className="col-md-2 col-form-label col-form-label-sm">
+            About Product
+          </label>
+          <div className="col-md-10">
+            <textarea
+              className="form-control form-control-sm"
+              id="description"
+              name="about"
+              placeholder="About Product"
+              onChange={handleChange}
+            />
+          </div>
+        </div><br/>
         <div className="row g-3">
           <label htmlFor="description" className="col-md-2 col-form-label col-form-label-sm">
             Rating

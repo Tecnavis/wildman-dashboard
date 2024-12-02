@@ -148,7 +148,6 @@ const AllCustomerTable = () => {
             <tr>
               <th>No</th>
               <th>Name</th>
-              <th>Shop Name</th>
               <th>Phone </th>
               <th>Email</th>
               <th>Address</th>

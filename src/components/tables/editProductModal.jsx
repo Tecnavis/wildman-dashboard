@@ -326,6 +326,26 @@ const EditProductModal = ({ productId, show, onClose, onSave }) => {
               className="form-control"
             />
           </div>
+          <div className="mb-3">
+            <label>Length</label>
+            <input
+              type="text"
+              value={formValues.length}
+              onChange={handleInputChange}
+              name="length"
+              className="form-control"
+            />
+          </div>
+          <div className="mb-3">
+            <label>Size</label>
+            <input
+              type="text"
+              value={formValues.size}
+              onChange={handleInputChange}
+              name="size"
+              className="form-control"
+            />
+          </div>
           
           <div className="mb-3">
             <label>Weight</label>
@@ -482,6 +502,15 @@ const EditProductModal = ({ productId, show, onClose, onSave }) => {
               value={formValues.description}
               onChange={handleInputChange}
               name="description"
+              className="form-control"
+            />
+          </div>
+          <div className="mb-3">
+            <label>About</label>
+            <textarea
+              value={formValues.about}
+              onChange={handleInputChange}
+              name="about"
               className="form-control"
             />
           </div>

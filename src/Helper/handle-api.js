@@ -3,7 +3,7 @@ import Swal from "sweetalert2";
 
 // export const  URL = `${process.env.BASE_URL}`;
 export const  URL = `http://localhost:3000`;
-// export const  URL = `https://api.wildman.tecnavis.com`;
+// export const  URL = `https://api.wildmanpremium.com`;
 //update about
 export const updateAbout = async (id, about) => {
   const response = await axios.put(`${URL}/about/${id}`, about);

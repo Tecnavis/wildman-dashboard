@@ -141,7 +141,7 @@ const InvoiceModal = ({ show, onHide, order }) => {
                               </td>
                               <td>{product.sizeDetails?.quantity || 0}</td>
                               <td>₹{product.productDetails?.price || 0}</td>
-                              <td>₹{product.productDetails?.discount || 0}%</td>
+                              <td>{product.productDetails?.discount || 0}%</td>
                               <td>₹{product.productDetails?.gst || 0}</td>
                               <td>
                                 MRP Price: ₹

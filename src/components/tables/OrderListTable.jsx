@@ -5,6 +5,7 @@ import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
 import PaginationSection from "./PaginationSection";
 import { fetchCustomerOrder, URL,deleteCustomerOrder } from "../../Helper/handle-api";
 import axios from "axios";
+import InvoiceModal from "./invoiceModal";
 const OrderListTable = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [dataPerPage] = useState(10);
@@ -12,6 +13,12 @@ const OrderListTable = () => {
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [allOrder, setAllOrder] = useState([]);
   const [productStock, setProductStock] = useState({});
+  const [showInvoiceModal, setShowInvoiceModal] = useState(false);
+  const handleInvoice = (data) => {
+    setSelectedOrder(data);
+    setShowInvoiceModal(true);
+  };
+
 //fetch customer orders
   useEffect(() => {
     fetchCustomerOrder()
@@ -202,7 +209,7 @@ const handleReturn = async (order) => {
             <tr>
               <th>Order ID</th>
               <th>Customer</th>
-              <th>Shop Name</th>
+              <th>Gift Message</th>
               <th>Product</th>
               <th>Product count</th>
               <th>Price</th>
@@ -225,12 +232,18 @@ const handleReturn = async (order) => {
               <React.Fragment key={index}>
                 <tr>
                   <td rowSpan={data.products?.length || 1}>
-                    <Link to="/invoices">{data.orderId}</Link>
+                    {/* <Link to="/invoices">{data.orderId}</Link> */}
+                    <span
+                    style={{ color: "blue", cursor: "pointer" }}
+                    onClick={() => handleInvoice(data)}
+                  >
+                    {data.orderId}
+                  </span>
                   </td>
                   <td rowSpan={data.products?.length || 1}>
                     {data.customerName}
                   </td>
-                  <td rowSpan={data.products?.length || 1}>{data.shopName}</td>
+                  <td rowSpan={data.products?.length || 1}>{data.giftMessage}</td>
                   <td>
                     {data.products?.[0]?.productDetails?.mainCategory || "N/A"}
                   </td>
@@ -530,6 +543,11 @@ const handleReturn = async (order) => {
           </Modal.Footer>
         </Modal>
       )}
+<InvoiceModal
+        show={showInvoiceModal}
+        onHide={() => setShowInvoiceModal(false)}
+        order={selectedOrder}
+      />
     </>
   );
 };

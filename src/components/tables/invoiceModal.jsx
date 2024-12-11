@@ -4,9 +4,7 @@ import { URL } from "../../Helper/handle-api";
 import axios from "axios";
 
 const InvoiceModal = ({ show, onHide, order }) => {
-  const totalPaidAmount = order?.paidAmount || 0;
   const totalAmount = order?.totalAmount || 0;
-  const balanceAmount = totalAmount - totalPaidAmount;
   const [logo, setLogo] = useState([]);
 
   // Fetch logo
@@ -54,47 +52,12 @@ const InvoiceModal = ({ show, onHide, order }) => {
                             ))}
                           </div>
                           <div className="part-txt">
-                            <p className="mb-1">Admin :{order?.adminName}</p>
                             <p className="mb-1">
                               Address: 456 E-Commerce Avenue, Cityville,
                               Countryland
                             </p>
                             <p className="mb-1">Email: support@warehouse.com</p>
                             <p className="mb-1">Phone: +1 (800) 123-4567</p>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="col-sm-6">
-                        <div className="d-flex gap-xl-4 gap-3 status-row">
-                          <div className="w-50">
-                            <div className="payment-status">
-                              <label className="form-label">
-                                Payment Status:
-                              </label>
-                              <Form.Select
-                                className="form-control"
-                                value={order?.paymentStatus}
-                              >
-                                <option value="Paid">Paid</option>
-                                <option value="Unpaid">Unpaid</option>
-                                <option value="Partial">Partial</option>
-                              </Form.Select>
-                            </div>
-                          </div>
-                          <div className="w-50">
-                            <div className="Order-status">
-                              <label className="form-label">
-                                Order Status:
-                              </label>
-                              <Form.Select
-                                className="form-control"
-                                value={order?.orderStatus}
-                              >
-                                <option value="Pending">Pending</option>
-                                <option value="Delivered">Delivered</option>
-                                <option value="Canceled">Canceled</option>
-                              </Form.Select>
-                            </div>
                           </div>
                         </div>
                       </div>
@@ -127,7 +90,7 @@ const InvoiceModal = ({ show, onHide, order }) => {
                             <h3>Invoice Details:</h3>
                             <ul className="p-0">
                               <li>
-                                <span>Invoice No.:</span> {order?.orderId}
+                                <span>ORDER No.:</span> {order?.orderId}
                               </li>
                               <li>
                                 <span>Order Date:</span>{" "}
@@ -136,22 +99,20 @@ const InvoiceModal = ({ show, onHide, order }) => {
                                 ).toLocaleDateString()}
                               </li>
                               <li>
-                                <span>Total Amount:</span> ${order?.totalAmount}
+                                <span>Total Amount:</span> ₹{" "}
+                                {(
+                                  totalAmount +
+                                  order?.products?.reduce(
+                                    (totalGst, product) =>
+                                      totalGst +
+                                      (product.productDetails?.gst || 0) *
+                                        (product.sizeDetails?.quantity || 1),
+                                    0
+                                  )
+                                ).toFixed(2)}
                               </li>
                               <li>
                                 <span>Payment Type:</span> Cash on delivery
-                              </li>
-                              <li>
-                                <span>Payment Status:</span>{" "}
-                                <span
-                                  className={
-                                    order?.paymentStatus === "Paid"
-                                      ? "text-success"
-                                      : "text-danger"
-                                  }
-                                >
-                                  {order?.paymentStatus}
-                                </span>
                               </li>
                             </ul>
                           </div>
@@ -166,7 +127,7 @@ const InvoiceModal = ({ show, onHide, order }) => {
                             <th>Products</th>
                             <th>Qty.</th>
                             <th>Price</th>
-                            <th>Shipping Cost</th>
+                            <th>Offer Price</th>
                             <th>Tax</th>
                             <th>Subtotal</th>
                           </tr>
@@ -175,39 +136,71 @@ const InvoiceModal = ({ show, onHide, order }) => {
                           {order?.products.map((product, index) => (
                             <tr key={index}>
                               <td>{index + 1}</td>
-                              <td>{product.mainCategory}</td>
-                              <td>{product.quantity}</td>
-                              <td>${product.price}</td>
-                              <td>${product.shippingCost || 0}</td>
-                              <td>${product.tax || 0}</td>
                               <td>
-                                $
+                                {product.productDetails?.mainCategory || ""}
+                              </td>
+                              <td>{product.sizeDetails?.quantity || 0}</td>
+                              <td>₹{product.productDetails?.price || 0}</td>
+                              <td>₹{product.productDetails?.discount || 0}%</td>
+                              <td>₹{product.productDetails?.gst || 0}</td>
+                              <td>
+                                MRP Price: ₹
                                 {(
-                                  product.price * product.quantity +
+                                  product.productDetails?.price *
+                                    product.sizeDetails?.quantity +
                                   (product.shippingCost || 0) +
-                                  (product.tax || 0)
+                                  (product.productDetails?.gst || 0)
                                 ).toFixed(2)}
+                                <br />
+                                {/* // Display the discounted price minus % discount from the original price */}
+                                <span>
+                                  Offer Price: ₹{" "}
+                                  {(
+                                    (product.productDetails?.price || 0) *
+                                    (1 -
+                                      (product.productDetails?.discount || 0) /
+                                        100)
+                                  )*(product.sizeDetails?.quantity || 1).toFixed(2)}{" "}
+                                </span>
                               </td>
                             </tr>
                           ))}
                           {/* Total, Paid, and Balance Row */}
+
                           <tr>
                             <td colSpan="6" className="text-end">
-                              <strong>Total Amount</strong>
+                              <strong>Total GST</strong>
                             </td>
-                            <td>${totalAmount.toFixed(2)}</td>
+                            <td>
+                              ₹{" "}
+                              {order?.products
+                                ?.reduce(
+                                  (totalGst, product) =>
+                                    totalGst +
+                                    (product.productDetails?.gst || 0) *
+                                      (product.sizeDetails?.quantity || 1),
+                                  0
+                                )
+                                .toFixed(2)}
+                            </td>
                           </tr>
                           <tr>
                             <td colSpan="6" className="text-end">
-                              <strong>Paid Amount</strong>
+                              <strong>Total Amount (Including GST)</strong>
                             </td>
-                            <td>${totalPaidAmount.toFixed(2)}</td>
-                          </tr>
-                          <tr>
-                            <td colSpan="6" className="text-end">
-                              <strong>Balance Amount</strong>
+                            <td>
+                              ₹
+                              {(
+                                totalAmount +
+                                order?.products?.reduce(
+                                  (totalGst, product) =>
+                                    totalGst +
+                                    (product.productDetails?.gst || 0) *
+                                      (product.sizeDetails?.quantity || 1),
+                                  0
+                                )
+                              ).toFixed(2)}
                             </td>
-                            <td>${balanceAmount.toFixed(2)}</td>
                           </tr>
                         </tbody>
                       </table>

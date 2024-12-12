@@ -2,11 +2,15 @@ import React, { useEffect, useState } from "react";
 import { Table, Modal, Button, Form, Row, Col } from "react-bootstrap";
 import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
 import PaginationSection from "./PaginationSection";
-import { fetchCustomerOrder, URL,deleteCustomerOrder } from "../../Helper/handle-api";
+import {
+  fetchCustomerOrder,
+  URL,
+  deleteCustomerOrder,
+} from "../../Helper/handle-api";
 import axios from "axios";
 import InvoiceModal from "./invoiceModal";
-import jsPDF from 'jspdf';
-import 'jspdf-autotable';
+import jsPDF from "jspdf";
+import "jspdf-autotable";
 import html2canvas from "html2canvas";
 
 const OrderListTable = () => {
@@ -24,7 +28,7 @@ const OrderListTable = () => {
     setShowInvoiceModal(true);
   };
 
-//fetch customer orders
+  //fetch customer orders
   useEffect(() => {
     fetchCustomerOrder()
       .then((response) => {
@@ -38,7 +42,7 @@ const OrderListTable = () => {
       .catch((err) => console.log("Error fetching data:", err));
   }, []);
 
-//check stock availability
+  //check stock availability
   const checkStockAvailability = async (orders) => {
     const stockInfo = {};
     for (const order of orders) {
@@ -56,7 +60,10 @@ const OrderListTable = () => {
               return acc;
             }, {});
           } catch (error) {
-            console.error(`Error fetching stock for product ${productId}:`, error);
+            console.error(
+              `Error fetching stock for product ${productId}:`,
+              error
+            );
             stockInfo[productId] = {};
           }
         }
@@ -69,7 +76,7 @@ const OrderListTable = () => {
     setProductStock(stockInfo);
     setAllOrder([...orders]);
   };
-//edit customer order
+  //edit customer order
   const handleEditClick = (order) => {
     setSelectedOrder(order);
     setShowModal(true);
@@ -81,57 +88,59 @@ const OrderListTable = () => {
     const { name, value } = e.target;
     setSelectedOrder((prevOrder) => {
       const newOrder = { ...prevOrder };
-  
-      if (name.includes('products')) {
+
+      if (name.includes("products")) {
         const match = name.match(/products\[(\d+)\]\.sizeDetails\.quantity/);
         if (match) {
           const index = match[1];
           const quantity = parseInt(value, 10);
           newOrder.products[index].sizeDetails.quantity = quantity;
-  
+
           // Recalculate totalAmount
           newOrder.totalAmount = newOrder.products.reduce((total, product) => {
-            return total + (product.sizeDetails.quantity * product.productDetails.price);
+            return (
+              total +
+              product.sizeDetails.quantity * product.productDetails.price
+            );
           }, 0);
-  
+
           // Recalculate balanceAmount
           newOrder.balanceAmount = newOrder.totalAmount - newOrder.paidAmount;
         }
-      } else if (name === 'paidAmount') {
+      } else if (name === "paidAmount") {
         // Update paidAmount
         const paidAmount = parseFloat(value);
         newOrder.paidAmount = paidAmount;
-  
+
         // Recalculate balanceAmount
         newOrder.balanceAmount = newOrder.totalAmount - paidAmount;
-      } else if (name === 'deliveryStatus') {
+      } else if (name === "deliveryStatus") {
         // Update deliveryStatus
         newOrder.deliveryStatus = value;
-  
+
         // Set deliveryDate based on deliveryStatus
         if (value === "Delivered") {
-          newOrder.deliveryDate = new Date().toISOString(); 
+          newOrder.deliveryDate = new Date().toISOString();
         } else {
-          newOrder.deliveryDate = "Not Delivered"; 
+          newOrder.deliveryDate = "Not Delivered";
         }
       } else {
         newOrder[name] = value;
       }
-  
+
       return newOrder;
     });
   };
-  
-  
-//update customer orders
+
+  //update customer orders
   const handleSaveChanges = async () => {
-    console.log("Selected Order:", selectedOrder); 
+    console.log("Selected Order:", selectedOrder);
     try {
       const response = await axios.put(
         `${URL}/customerorder/${selectedOrder._id}`,
         selectedOrder
       );
-  
+
       if (response.status === 200) {
         console.log("Order updated:", response.data.order);
         setAllOrder((prevOrders) =>
@@ -144,7 +153,7 @@ const OrderListTable = () => {
         console.log("Failed to update the order");
       }
     } catch (error) {
-      console.error("Error updating order:", error); 
+      console.error("Error updating order:", error);
     }
   };
   ///mark as delivered and deduct stock
@@ -152,37 +161,49 @@ const OrderListTable = () => {
     console.log("Order object:", order); // Log the order object
 
     // Check if the order has products and sizeDetails available
-    if (!order.products || order.products.length === 0 || !order.products[0].sizeDetails) {
-        console.error("No products or size details available to mark as delivered.");
-        return;
+    if (
+      !order.products ||
+      order.products.length === 0 ||
+      !order.products[0].sizeDetails
+    ) {
+      console.error(
+        "No products or size details available to mark as delivered."
+      );
+      return;
     }
 
     try {
-        const response = await axios.put(`${URL}/customerorder/${order._id}/delivered`);
-        if (response.status === 200) {
-            setAllOrder((prevOrders) =>
-                prevOrders.map((o) =>
-                    o._id === order._id
-                        ? { ...o, deliveryStatus: "Delivered", deliveryDate: new Date().toISOString() }
-                        : o
-                )
-            );
-        } else {
-            console.log("Failed to mark as delivered");
-        }
-    } catch (error) {
-        console.error("Error marking as delivered:", error);
-    }
-};
-const handleReturn = async (order) => {
-    try {
-      const response = await axios.put(`${URL}/customerorder/${order._id}/return`);
+      const response = await axios.put(
+        `${URL}/customerorder/${order._id}/delivered`
+      );
       if (response.status === 200) {
         setAllOrder((prevOrders) =>
           prevOrders.map((o) =>
             o._id === order._id
-              ? { ...o, return: true }
+              ? {
+                  ...o,
+                  deliveryStatus: "Delivered",
+                  deliveryDate: new Date().toISOString(),
+                }
               : o
+          )
+        );
+      } else {
+        console.log("Failed to mark as delivered");
+      }
+    } catch (error) {
+      console.error("Error marking as delivered:", error);
+    }
+  };
+  const handleReturn = async (order) => {
+    try {
+      const response = await axios.put(
+        `${URL}/customerorder/${order._id}/return`
+      );
+      if (response.status === 200) {
+        setAllOrder((prevOrders) =>
+          prevOrders.map((o) =>
+            o._id === order._id ? { ...o, return: true } : o
           )
         );
         console.log("Order returned successfully");
@@ -194,7 +215,6 @@ const handleReturn = async (order) => {
     }
   };
 
-  
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   const totalPages = Math.ceil(allOrder.length / dataPerPage);
@@ -202,149 +222,170 @@ const handleReturn = async (order) => {
   for (let i = 1; i <= totalPages; i++) {
     pageNumbers.push(i);
   }
-// New function to handle PDF download of selected orders
+  // New function to handle PDF download of selected orders
 
-const handleDownloadSelectedInvoices = async () => {
-  if (selectedOrders.length === 0) {
-    alert("Please select orders to download invoices.");
-    return;
-  }
-
-  try {
-    // Create a new PDF document
-    const pdf = new jsPDF({
-      orientation: 'portrait',
-      unit: 'mm',
-      format: 'a4'
-    });
-
-    for (const [index, order] of selectedOrders.entries()) {
-      const pageWidth = pdf.internal.pageSize.getWidth();
-      const margin = 10;
-
-      // Add header
-      pdf.setFontSize(12);
-      pdf.text('Address: WILDAMAN', margin, 25);
-      pdf.text('Email: support@wildman.com', margin, 30);
-      pdf.text('Phone: +1 (800) 123-4567', margin, 35);
-
-      // Add customer and invoice details
-      pdf.setFontSize(12);
-      pdf.text('Customer Details:', margin, 45);
-      pdf.setFontSize(10);
-      pdf.text(`Name: ${order.customerName}`, margin, 50);
-      pdf.text(`Email: ${order.email || 'N/A'}`, margin, 55);
-      pdf.text(`Phone: ${order.phone || 'N/A'}`, margin, 60);
-      pdf.text(`Address: ${order.address}`, margin, 65);
-
-      pdf.setFontSize(12);
-      pdf.text('Invoice Details:', pageWidth / 2 + margin, 45);
-      pdf.setFontSize(10);
-      pdf.text(`ORDER No.: ${order.orderId}`, pageWidth / 2 + margin, 50);
-      pdf.text(`Order Date: ${new Date(order.orderDate).toLocaleDateString()}`, pageWidth / 2 + margin, 55);
-      pdf.text('Payment Type: Cash on delivery', pageWidth / 2 + margin, 65);
-
-      // Prepare table data
-      const tableData = order.products.map((product, pIndex) => {
-        const subtotal = (
-          (product.productDetails?.price || 0) *
-          (1 - (product.productDetails?.discount || 0) / 100) *
-          (product.sizeDetails?.quantity || 1)
-        ).toFixed(2);
-
-        return [
-          pIndex + 1,
-          product.productDetails?.mainCategory || '',
-          product.sizeDetails?.quantity || 0,
-          `Rs. ${product.productDetails?.price || 0}`,
-          `${product.productDetails?.discount || 0}%`,
-          `Rs. ${product.productDetails?.gst || 0}`,
-          `Rs. ${subtotal}`
-        ];
-      });
-
-      // Calculate total GST and total amount
-      const totalGST = order.products.reduce(
-        (totalGst, product) =>
-          totalGst +
-          (product.productDetails?.gst || 0) * (product.sizeDetails?.quantity || 1),
-        0
-      ).toFixed(2);
-
-      const totalAmountIncludingGST = (
-        tableData.reduce((sum, row) => sum + parseFloat(row[6].replace('Rs. ', '')), 0) +
-        parseFloat(totalGST)
-      ).toFixed(2);
-
-      // Add table
-      pdf.autoTable({
-        startY: 75,
-        head: [['No.', 'Products', 'Qty.', 'Price', 'Offer Price', 'Tax', 'Subtotal']],
-        body: tableData,
-        margin: { left: margin, right: margin },
-        theme: 'grid',
-        headStyles: { fillColor: ["black"] },
-        styles: { fontSize: 10, cellPadding: 2 },
-      });
-
-      // Add totals
-      const finalY = pdf.lastAutoTable.finalY || 75;
-      pdf.setFontSize(10);
-      pdf.text(`Total GST: Rs. ${totalGST}`, margin, finalY + 10);
-      pdf.text(`Total Amount (Including GST): Rs. ${totalAmountIncludingGST}`, margin, finalY + 15);
-
-      // Add new page if not the last order
-      if (index < selectedOrders.length - 1) {
-        pdf.addPage();
-      }
+  const handleDownloadSelectedInvoices = async () => {
+    if (selectedOrders.length === 0) {
+      alert("Please select orders to download invoices.");
+      return;
     }
 
-    // Save the PDF
-    pdf.save(`Selected_Invoices_${new Date().toISOString().split('T')[0]}.pdf`);
+    try {
+      // Create a new PDF document
+      const pdf = new jsPDF({
+        orientation: "portrait",
+        unit: "mm",
+        format: "a4",
+      });
 
-    // Clear selected orders and uncheck checkboxes
-    setSelectedOrders([]);
-    document.querySelectorAll('.form-check-input').forEach(checkbox => {
-      checkbox.checked = false;
-    });
-  } catch (error) {
-    console.error("Error generating PDF:", error);
-    alert("Failed to generate PDF. Please try again.");
-  }
-};
+      for (const [index, order] of selectedOrders.entries()) {
+        const pageWidth = pdf.internal.pageSize.getWidth();
+        const margin = 10;
 
+        // Add header
+        pdf.setFontSize(12);
+        pdf.text("Address: WILDAMAN", margin, 25);
+        pdf.text("Email: support@wildman.com", margin, 30);
+        pdf.text("Phone: +1 (800) 123-4567", margin, 35);
 
+        // Add customer and invoice details
+        pdf.setFontSize(12);
+        pdf.text("Customer Details:", margin, 45);
+        pdf.setFontSize(10);
+        pdf.text(`Name: ${order.customerName}`, margin, 50);
+        pdf.text(`Email: ${order.email || "N/A"}`, margin, 55);
+        pdf.text(`Phone: ${order.phone || "N/A"}`, margin, 60);
+        pdf.text(`Address: ${order.address}`, margin, 65);
 
+        pdf.setFontSize(12);
+        pdf.text("Invoice Details:", pageWidth / 2 + margin, 45);
+        pdf.setFontSize(10);
+        pdf.text(`ORDER No.: ${order.orderId}`, pageWidth / 2 + margin, 50);
+        pdf.text(
+          `Order Date: ${new Date(order.orderDate).toLocaleDateString()}`,
+          pageWidth / 2 + margin,
+          55
+        );
+        pdf.text("Payment Type: Cash on delivery", pageWidth / 2 + margin, 65);
 
+        // Prepare table data
+        const tableData = order.products.map((product, pIndex) => {
+          const subtotal = (
+            (product.productDetails?.price || 0) *
+            (1 - (product.productDetails?.discount || 0) / 100) *
+            (product.sizeDetails?.quantity || 1)
+          ).toFixed(2);
 
+          return [
+            pIndex + 1,
+            product.productDetails?.mainCategory || "",
+            product.sizeDetails?.quantity || 0,
+            `Rs. ${product.productDetails?.price || 0}`,
+            `${product.productDetails?.discount || 0}%`,
+            `Rs. ${product.productDetails?.gst || 0}`,
+            `Rs. ${subtotal}`,
+          ];
+        });
 
-// Modify checkbox handler to track selected orders
-const handleOrderSelect = (order, isChecked) => {
-  setSelectedOrders(prev => 
-    isChecked 
-      ? [...prev, order] 
-      : prev.filter(o => o._id !== order._id)
-  );
-};
+        // Calculate total GST and total amount
+        const totalGST = order.products
+          .reduce(
+            (totalGst, product) =>
+              totalGst +
+              (product.productDetails?.gst || 0) *
+                (product.sizeDetails?.quantity || 1),
+            0
+          )
+          .toFixed(2);
+
+        const totalAmountIncludingGST = (
+          tableData.reduce(
+            (sum, row) => sum + parseFloat(row[6].replace("Rs. ", "")),
+            0
+          ) + parseFloat(totalGST)
+        ).toFixed(2);
+
+        // Add table
+        pdf.autoTable({
+          startY: 75,
+          head: [
+            [
+              "No.",
+              "Products",
+              "Qty.",
+              "Price",
+              "Offer Price",
+              "Tax",
+              "Subtotal",
+            ],
+          ],
+          body: tableData,
+          margin: { left: margin, right: margin },
+          theme: "grid",
+          headStyles: { fillColor: ["black"] },
+          styles: { fontSize: 10, cellPadding: 2 },
+        });
+
+        // Add totals
+        const finalY = pdf.lastAutoTable.finalY || 75;
+        pdf.setFontSize(10);
+        pdf.text(`Total GST: Rs. ${totalGST}`, margin, finalY + 10);
+        pdf.text(
+          `Total Amount (Including GST): Rs. ${totalAmountIncludingGST}`,
+          margin,
+          finalY + 15
+        );
+        pdf.text(
+          "If you add gift wrapping, it will take an extra Rs.30",
+          margin,
+          finalY + 20
+        ); // Add new page if not the last order
+        if (index < selectedOrders.length - 1) {
+          pdf.addPage();
+        }
+      }
+
+      // Save the PDF
+      pdf.save(
+        `Selected_Invoices_${new Date().toISOString().split("T")[0]}.pdf`
+      );
+
+      // Clear selected orders and uncheck checkboxes
+      setSelectedOrders([]);
+      document.querySelectorAll(".form-check-input").forEach((checkbox) => {
+        checkbox.checked = false;
+      });
+    } catch (error) {
+      console.error("Error generating PDF:", error);
+      alert("Failed to generate PDF. Please try again.");
+    }
+  };
+
+  // Modify checkbox handler to track selected orders
+  const handleOrderSelect = (order, isChecked) => {
+    setSelectedOrders((prev) =>
+      isChecked ? [...prev, order] : prev.filter((o) => o._id !== order._id)
+    );
+  };
   return (
     <>
       <OverlayScrollbarsComponent>
         <div className="table-responsive">
-        <Button 
-            variant="primary" 
+          <Button
+            variant="primary"
             onClick={handleDownloadSelectedInvoices}
             disabled={selectedOrders.length === 0}
           >
             Download Selected Invoices as PDF
           </Button>
-            </div>
+        </div>
         <Table
           className="table table-dashed table-hover digi-dataTable all-product-table table-striped"
           id="allProductTable"
         >
           <thead>
             <tr>
-            <th className="no-sort">
+              <th className="no-sort">
                 <div className="form-check">
                   <input
                     className="form-check-input"
@@ -352,9 +393,11 @@ const handleOrderSelect = (order, isChecked) => {
                     id="markAllProduct"
                     onChange={(e) => {
                       const isChecked = e.target.checked;
-                      document.querySelectorAll('.order-checkbox').forEach(checkbox => {
-                        checkbox.checked = isChecked;
-                      });
+                      document
+                        .querySelectorAll(".order-checkbox")
+                        .forEach((checkbox) => {
+                          checkbox.checked = isChecked;
+                        });
                       setSelectedOrders(isChecked ? [...allOrder] : []);
                     }}
                   />
@@ -384,28 +427,32 @@ const handleOrderSelect = (order, isChecked) => {
             {allOrder.map((data, index) => (
               <React.Fragment key={index}>
                 <tr>
-                <td>
+                  <td>
                     <div className="form-check">
                       <input
                         className="form-check-input order-checkbox"
                         type="checkbox"
-                        onChange={(e) => handleOrderSelect(data, e.target.checked)}
+                        onChange={(e) =>
+                          handleOrderSelect(data, e.target.checked)
+                        }
                       />
                     </div>
                   </td>
                   <td rowSpan={data.products?.length || 1}>
                     {/* <Link to="/invoices">{data.orderId}</Link> */}
                     <span
-                    style={{ color: "blue", cursor: "pointer" }}
-                    onClick={() => handleInvoice(data)}
-                  >
-                    {data.orderId}
-                  </span>
+                      style={{ color: "blue", cursor: "pointer" }}
+                      onClick={() => handleInvoice(data)}
+                    >
+                      {data.orderId}
+                    </span>
                   </td>
                   <td rowSpan={data.products?.length || 1}>
                     {data.customerName}
                   </td>
-                  <td rowSpan={data.products?.length || 1}>{data.giftMessage}</td>
+                  <td rowSpan={data.products?.length || 1}>
+                    {data.giftMessage}
+                  </td>
                   <td>
                     {data.products?.[0]?.productDetails?.mainCategory || "N/A"}
                   </td>
@@ -439,37 +486,47 @@ const handleOrderSelect = (order, isChecked) => {
                       ? new Date(data.deliveryDate).toLocaleDateString()
                       : "N/A"}
                   </td>
-                  <td >
-                    {data.products.every(product => product.stockAvailable)
+                  <td>
+                    {data.products.every((product) => product.stockAvailable)
                       ? "In Stock"
                       : "Out of Stock"}
-                  </td>   
+                  </td>
                   <td rowSpan={data.products?.length || 1}>
                     <Button
                       variant="primary"
                       // disabled={data.deliveryStatus === "Delivered"}
-                      disabled={data.deliveryStatus === "Delivered" || !data.products.every(product => product.stockAvailable)}
+                      disabled={
+                        data.deliveryStatus === "Delivered" ||
+                        !data.products.every(
+                          (product) => product.stockAvailable
+                        )
+                      }
                       onClick={() => handleDelivered(data)}
                     >
                       Mark as Delivered
                     </Button>
-                  </td>    
+                  </td>
                   <td rowSpan={data.products?.length || 1}>
-                  <Button 
-                      variant="danger" 
-                      disabled={data.deliveryStatus !== "Delivered" || data.return}
+                    <Button
+                      variant="danger"
+                      disabled={
+                        data.deliveryStatus !== "Delivered" || data.return
+                      }
                       onClick={() => handleReturn(data)}
                     >
                       {data.return ? "Returned" : "Return"}
                     </Button>
-                    </td>         
+                  </td>
                   <td rowSpan={data.products?.length || 1}>
                     <div className="btn-box">
                       <button onClick={() => handleEditClick(data)}>
                         <i className="fa-light fa-pen"></i>
                       </button>
                       <button>
-                        <i className="fa-light fa-trash" onClick={() => deleteCustomerOrder(data._id)}></i>
+                        <i
+                          className="fa-light fa-trash"
+                          onClick={() => deleteCustomerOrder(data._id)}
+                        ></i>
                       </button>
                     </div>
                   </td>
@@ -479,7 +536,9 @@ const handleOrderSelect = (order, isChecked) => {
                     <td>{product.productDetails?.mainCategory || "N/A"}</td>
                     <td>{product.sizeDetails?.quantity || "N/A"}</td>
                     <td>{product.productDetails?.price || "N/A"}</td>
-                    <td>{product.stockAvailable ? "In Stock" : "Out of Stock"}</td>
+                    <td>
+                      {product.stockAvailable ? "In Stock" : "Out of Stock"}
+                    </td>
                   </tr>
                 ))}
               </React.Fragment>
@@ -705,7 +764,7 @@ const handleOrderSelect = (order, isChecked) => {
           </Modal.Footer>
         </Modal>
       )}
-<InvoiceModal
+      <InvoiceModal
         show={showInvoiceModal}
         onHide={() => setShowInvoiceModal(false)}
         order={selectedOrder}

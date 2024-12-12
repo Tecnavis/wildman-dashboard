@@ -7,6 +7,8 @@ import axios from "axios";
 import InvoiceModal from "./invoiceModal";
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
+import html2canvas from "html2canvas";
+
 const OrderListTable = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [dataPerPage] = useState(10);
@@ -222,7 +224,6 @@ const handleDownloadSelectedInvoices = async () => {
 
       // Add header
       pdf.setFontSize(12);
-      pdf.setFontSize(10);
       pdf.text('Address: WILDAMAN', margin, 25);
       pdf.text('Email: support@wildman.com', margin, 30);
       pdf.text('Phone: +1 (800) 123-4567', margin, 35);
@@ -255,12 +256,25 @@ const handleDownloadSelectedInvoices = async () => {
           pIndex + 1,
           product.productDetails?.mainCategory || '',
           product.sizeDetails?.quantity || 0,
-          `Rs.${product.productDetails?.price || 0}`,
+          `Rs. ${product.productDetails?.price || 0}`,
           `${product.productDetails?.discount || 0}%`,
-          `Rs.${product.productDetails?.gst || 0}`,
-          `Rs.${subtotal}`
+          `Rs. ${product.productDetails?.gst || 0}`,
+          `Rs. ${subtotal}`
         ];
       });
+
+      // Calculate total GST and total amount
+      const totalGST = order.products.reduce(
+        (totalGst, product) =>
+          totalGst +
+          (product.productDetails?.gst || 0) * (product.sizeDetails?.quantity || 1),
+        0
+      ).toFixed(2);
+
+      const totalAmountIncludingGST = (
+        tableData.reduce((sum, row) => sum + parseFloat(row[6].replace('Rs. ', '')), 0) +
+        parseFloat(totalGST)
+      ).toFixed(2);
 
       // Add table
       pdf.autoTable({
@@ -272,6 +286,12 @@ const handleDownloadSelectedInvoices = async () => {
         headStyles: { fillColor: ["black"] },
         styles: { fontSize: 10, cellPadding: 2 },
       });
+
+      // Add totals
+      const finalY = pdf.lastAutoTable.finalY || 75;
+      pdf.setFontSize(10);
+      pdf.text(`Total GST: Rs. ${totalGST}`, margin, finalY + 10);
+      pdf.text(`Total Amount (Including GST): Rs. ${totalAmountIncludingGST}`, margin, finalY + 15);
 
       // Add new page if not the last order
       if (index < selectedOrders.length - 1) {
@@ -292,6 +312,7 @@ const handleDownloadSelectedInvoices = async () => {
     alert("Failed to generate PDF. Please try again.");
   }
 };
+
 
 
 

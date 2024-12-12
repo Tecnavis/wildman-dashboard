@@ -266,7 +266,7 @@ const OrderListTable = () => {
           pageWidth / 2 + margin,
           55
         );
-        pdf.text("Payment Type: Cash on delivery", pageWidth / 2 + margin, 65);
+        pdf.text("Payment Type: Cash on delivery", pageWidth / 2 + margin, 60);
 
         // Prepare table data
         const tableData = order.products.map((product, pIndex) => {
@@ -427,7 +427,7 @@ const OrderListTable = () => {
             {allOrder.map((data, index) => (
               <React.Fragment key={index}>
                 <tr>
-                  <td>
+                  <td rowSpan={data.products?.length || 1}>
                     <div className="form-check">
                       <input
                         className="form-check-input order-checkbox"
@@ -459,7 +459,7 @@ const OrderListTable = () => {
                   <td>{data.products?.[0]?.sizeDetails?.quantity || "N/A"}</td>
                   <td>{data.products?.[0]?.productDetails?.price || "N/A"}</td>
                   <td rowSpan={data.products?.length || 1}>
-                    {data.totalAmount}
+                   Exc.GST {data.totalAmount}
                   </td>
                   <td rowSpan={data.products?.length || 1}>
                     {data.paidAmount}
@@ -556,7 +556,7 @@ const OrderListTable = () => {
       {selectedOrder && (
         <Modal show={showModal} onHide={handleCloseModal} size="lg">
           <Modal.Header closeButton>
-            <Modal.Title>Edit Order</Modal.Title>
+            <Modal.Title style={{color:"white"}}>Edit Order</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <Form>
@@ -585,18 +585,7 @@ const OrderListTable = () => {
               </Row>
               <br />
               <Row>
-                <Col md={4}>
-                  <Form.Group controlId="shopName">
-                    <Form.Label>Shop Name</Form.Label>
-                    <Form.Control
-                      type="text"
-                      name="shopName"
-                      value={selectedOrder.shopName || ""}
-                      onChange={handleInputChange}
-                    />
-                  </Form.Group>
-                </Col>
-                <Col md={4}>
+                <Col md={6}>
                   <Form.Group controlId="paymentMethod">
                     <Form.Label>Total Amount</Form.Label>
                     <Form.Control
@@ -607,7 +596,7 @@ const OrderListTable = () => {
                     />
                   </Form.Group>
                 </Col>
-                <Col md={4}>
+                <Col md={6}>
                   <Form.Group controlId="paidAmount">
                     <Form.Label>Paid Amount</Form.Label>
                     <Form.Control

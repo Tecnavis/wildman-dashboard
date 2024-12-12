@@ -21,11 +21,11 @@ const InvoiceModal = ({ show, onHide, order }) => {
   }, []);
   return (
     <Modal show={show} onClick={onHide} centered size="xl">
-      <Modal.Header closeButton>
-        <Modal.Title>Invoice Details</Modal.Title>
+      <Modal.Header closeButton style={{backgroundColor:"black"}}>
+        <Modal.Title style={{color:"white"}}>Invoice Details</Modal.Title>
       </Modal.Header>
 
-      <Modal.Body>
+      {/* <Modal.Body> */}
         <div className="main-content" style={{ minHeight: "auto" }}>
           <div className="dashboard-breadcrumb dashboard-panel-header mb-30">
             <h2>Invoices</h2>
@@ -121,15 +121,15 @@ const InvoiceModal = ({ show, onHide, order }) => {
                     </div>
                     <div className="table-responsive mb-30">
                       <table className="table table-bordered mb-0 invoice-table">
-                        <thead>
-                          <tr>
-                            <th>No.</th>
-                            <th>Products</th>
-                            <th>Qty.</th>
-                            <th>Price</th>
-                            <th>Offer Price</th>
-                            <th>Tax</th>
-                            <th>Subtotal</th>
+                        <thead style={{backgroundColor:"black"}}>
+                          <tr >
+                            <th style={{color:"white"}}>No.</th>
+                            <th style={{color:"white"}}>Products</th>
+                            <th style={{color:"white"}}>Qty.</th>
+                            <th style={{color:"white"}}>Price</th>
+                            <th style={{color:"white"}}>Offer Price</th>
+                            <th style={{color:"white"}}>Tax</th>
+                            <th style={{color:"white"}}>Subtotal</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -166,7 +166,11 @@ const InvoiceModal = ({ show, onHide, order }) => {
                             </tr>
                           ))}
                           {/* Total, Paid, and Balance Row */}
-
+                          <tr>
+                            <td colSpan="7" className="text-end" >
+                              <p>If you add gift wrapping, it will take an extra ₹ 30.00</p>
+                            </td>
+                          </tr>
                           <tr>
                             <td colSpan="6" className="text-end">
                               <strong>Total GST</strong>
@@ -184,6 +188,7 @@ const InvoiceModal = ({ show, onHide, order }) => {
                                 .toFixed(2)}
                             </td>
                           </tr>
+                          
                           <tr>
                             <td colSpan="6" className="text-end">
                               <strong>Total Amount (Including GST)</strong>
@@ -211,7 +216,7 @@ const InvoiceModal = ({ show, onHide, order }) => {
             </div>
           </div>
         </div>
-      </Modal.Body>
+      {/* </Modal.Body> */}
       <Modal.Footer>
         <Button variant="secondary" onClick={onHide}>
           Close

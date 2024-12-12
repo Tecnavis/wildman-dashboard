@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Table, Modal, Button, Form, Row, Col } from "react-bootstrap";
-import { Link } from "react-router-dom";
 import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
 import PaginationSection from "./PaginationSection";
 import { fetchCustomerOrder, URL,deleteCustomerOrder } from "../../Helper/handle-api";
 import axios from "axios";
 import InvoiceModal from "./invoiceModal";
 import jsPDF from 'jspdf';
-import html2canvas from 'html2canvas';
+import 'jspdf-autotable';
 const OrderListTable = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [dataPerPage] = useState(10);
@@ -202,6 +201,7 @@ const handleReturn = async (order) => {
     pageNumbers.push(i);
   }
 // New function to handle PDF download of selected orders
+
 const handleDownloadSelectedInvoices = async () => {
   if (selectedOrders.length === 0) {
     alert("Please select orders to download invoices.");
@@ -216,124 +216,63 @@ const handleDownloadSelectedInvoices = async () => {
       format: 'a4'
     });
 
-    // Fetch logo
-    let logoUrl = '';
-    try {
-      const logoResponse = await axios.get(`${URL}/logo`);
-      if (logoResponse.data && logoResponse.data.length > 0) {
-        logoUrl = `${URL}/images/${logoResponse.data[0].image}`;
-      }
-    } catch (error) {
-      console.error("Error fetching logo:", error);
-    }
-
-    // Iterate through selected orders
     for (const [index, order] of selectedOrders.entries()) {
-      // Calculate total GST
-      const totalGst = order.products.reduce(
-        (totalGst, product) =>
-          totalGst +
-          (product.productDetails?.gst || 0) *
-            (product.sizeDetails?.quantity || 1),
-        0
-      );
+      const pageWidth = pdf.internal.pageSize.getWidth();
+      const margin = 10;
 
-      // Create PDF content
-      const pageContent = `
-        <div style="font-family: Arial, sans-serif; max-width: 210mm; margin: 0 auto; padding: 10mm;">
-          <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 20px;">
-            <div>
-              ${logoUrl ? `<img src="${logoUrl}" style="max-width: 100px; margin-bottom: 10px;">` : ''}
-              <p style="margin: 0; font-size: 10px;">Address: 456 E-Commerce Avenue, Cityville, Countryland</p>
-              <p style="margin: 0; font-size: 10px;">Email: support@warehouse.com</p>
-              <p style="margin: 0; font-size: 10px;">Phone: +1 (800) 123-4567</p>
-            </div>
-          </div>
+      // Add header
+      pdf.setFontSize(12);
+      pdf.setFontSize(10);
+      pdf.text('Address: WILDAMAN', margin, 25);
+      pdf.text('Email: support@wildman.com', margin, 30);
+      pdf.text('Phone: +1 (800) 123-4567', margin, 35);
 
-          <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
-            <div style="width: 48%;">
-              <h3 style="margin-bottom: 10px; font-size: 12px;">Customer Details:</h3>
-              <p style="margin: 0; font-size: 10px;"><strong>Name:</strong> ${order.customerName}</p>
-              <p style="margin: 0; font-size: 10px;"><strong>Email:</strong> ${order.email || 'N/A'}</p>
-              <p style="margin: 0; font-size: 10px;"><strong>Phone:</strong> ${order.phone || 'N/A'}</p>
-              <p style="margin: 0; font-size: 10px;"><strong>Address:</strong> ${order.address}</p>
-            </div>
-            <div style="width: 48%; text-align: right;">
-              <h3 style="margin-bottom: 10px; font-size: 12px;">Invoice Details:</h3>
-              <p style="margin: 0; font-size: 10px;"><strong>ORDER No.:</strong> ${order.orderId}</p>
-              <p style="margin: 0; font-size: 10px;"><strong>Order Date:</strong> ${new Date(order.orderDate).toLocaleDateString()}</p>
-              <p style="margin: 0; font-size: 10px;"><strong>Total Amount:</strong> ₹ ${(order.totalAmount + totalGst).toFixed(2)}</p>
-              <p style="margin: 0; font-size: 10px;"><strong>Payment Type:</strong> Cash on delivery</p>
-            </div>
-          </div>
+      // Add customer and invoice details
+      pdf.setFontSize(12);
+      pdf.text('Customer Details:', margin, 45);
+      pdf.setFontSize(10);
+      pdf.text(`Name: ${order.customerName}`, margin, 50);
+      pdf.text(`Email: ${order.email || 'N/A'}`, margin, 55);
+      pdf.text(`Phone: ${order.phone || 'N/A'}`, margin, 60);
+      pdf.text(`Address: ${order.address}`, margin, 65);
 
-          <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
-            <thead>
-              <tr>
-                <th style="border: 1px solid #000; padding: 5px; font-size: 10px;">No.</th>
-                <th style="border: 1px solid #000; padding: 5px; font-size: 10px;">Products</th>
-                <th style="border: 1px solid #000; padding: 5px; font-size: 10px;">Qty.</th>
-                <th style="border: 1px solid #000; padding: 5px; font-size: 10px;">Price</th>
-                <th style="border: 1px solid #000; padding: 5px; font-size: 10px;">Offer Price</th>
-                <th style="border: 1px solid #000; padding: 5px; font-size: 10px;">Tax</th>
-                <th style="border: 1px solid #000; padding: 5px; font-size: 10px;">Subtotal</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${order.products.map((product, pIndex) => `
-                <tr>
-                  <td style="border: 1px solid #000; padding: 5px; font-size: 10px;">${pIndex + 1}</td>
-                  <td style="border: 1px solid #000; padding: 5px; font-size: 10px;">${product.productDetails?.mainCategory || ''}</td>
-                  <td style="border: 1px solid #000; padding: 5px; font-size: 10px;">${product.sizeDetails?.quantity || 0}</td>
-                  <td style="border: 1px solid #000; padding: 5px; font-size: 10px;">₹${product.productDetails?.price || 0}</td>
-                  <td style="border: 1px solid #000; padding: 5px; font-size: 10px;">${product.productDetails?.discount || 0}%</td>
-                  <td style="border: 1px solid #000; padding: 5px; font-size: 10px;">₹${product.productDetails?.gst || 0}</td>
-                  <td style="border: 1px solid #000; padding: 5px; font-size: 10px;">
-                    MRP Price: ₹${(
-                      (product.productDetails?.price * product.sizeDetails?.quantity) +
-                      (product.shippingCost || 0) +
-                      (product.productDetails?.gst || 0)
-                    ).toFixed(2)}<br>
-                    Offer Price: ₹${(
-                      (product.productDetails?.price || 0) *
-                      (1 - (product.productDetails?.discount || 0) / 100) *
-                      (product.sizeDetails?.quantity || 1)
-                    ).toFixed(2)}
-                  </td>
-                </tr>
-              `).join('')}
-              <tr>
-                <td colspan="6" style="border: 1px solid #000; padding: 5px; text-align: right; font-size: 10px;"><strong>Total GST</strong></td>
-                <td style="border: 1px solid #000; padding: 5px; font-size: 10px;">₹ ${totalGst.toFixed(2)}</td>
-              </tr>
-              <tr>
-                <td colspan="6" style="border: 1px solid #000; padding: 5px; text-align: right; font-size: 10px;"><strong>Total Amount (Including GST)</strong></td>
-                <td style="border: 1px solid #000; padding: 5px; font-size: 10px;">₹ ${(order.totalAmount + totalGst).toFixed(2)}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      `;
+      pdf.setFontSize(12);
+      pdf.text('Invoice Details:', pageWidth / 2 + margin, 45);
+      pdf.setFontSize(10);
+      pdf.text(`ORDER No.: ${order.orderId}`, pageWidth / 2 + margin, 50);
+      pdf.text(`Order Date: ${new Date(order.orderDate).toLocaleDateString()}`, pageWidth / 2 + margin, 55);
+      pdf.text('Payment Type: Cash on delivery', pageWidth / 2 + margin, 65);
 
-      // Create a temporary div to render the HTML
-      const tempDiv = document.createElement('div');
-      tempDiv.innerHTML = pageContent;
-      document.body.appendChild(tempDiv);
+      // Prepare table data
+      const tableData = order.products.map((product, pIndex) => {
+        const subtotal = (
+          (product.productDetails?.price || 0) *
+          (1 - (product.productDetails?.discount || 0) / 100) *
+          (product.sizeDetails?.quantity || 1)
+        ).toFixed(2);
 
-      // Convert to canvas
-      const canvas = await html2canvas(tempDiv, { 
-        scale: 2,
-        useCORS: true,
-        logging: false
+        return [
+          pIndex + 1,
+          product.productDetails?.mainCategory || '',
+          product.sizeDetails?.quantity || 0,
+          `Rs.${product.productDetails?.price || 0}`,
+          `${product.productDetails?.discount || 0}%`,
+          `Rs.${product.productDetails?.gst || 0}`,
+          `Rs.${subtotal}`
+        ];
       });
 
-      // Remove temporary div
-      document.body.removeChild(tempDiv);
+      // Add table
+      pdf.autoTable({
+        startY: 75,
+        head: [['No.', 'Products', 'Qty.', 'Price', 'Offer Price', 'Tax', 'Subtotal']],
+        body: tableData,
+        margin: { left: margin, right: margin },
+        theme: 'grid',
+        headStyles: { fillColor: ["black"] },
+        styles: { fontSize: 10, cellPadding: 2 },
+      });
 
-      // Add canvas to PDF
-      const imgData = canvas.toDataURL('image/png');
-      pdf.addImage(imgData, 'PNG', 0, 0, 210, 297, '', 'FAST');
-      
       // Add new page if not the last order
       if (index < selectedOrders.length - 1) {
         pdf.addPage();
@@ -348,12 +287,15 @@ const handleDownloadSelectedInvoices = async () => {
     document.querySelectorAll('.form-check-input').forEach(checkbox => {
       checkbox.checked = false;
     });
-
   } catch (error) {
     console.error("Error generating PDF:", error);
     alert("Failed to generate PDF. Please try again.");
   }
 };
+
+
+
+
 
 // Modify checkbox handler to track selected orders
 const handleOrderSelect = (order, isChecked) => {

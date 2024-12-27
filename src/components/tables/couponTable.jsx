@@ -1,8 +1,21 @@
 import { OverlayScrollbarsComponent } from 'overlayscrollbars-react'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Couponcreate from "./couponcreate"
+import { fetchCoupons ,deleteCoupon} from '../../Helper/handle-api'
 
 const CustomizedDataTableSection = () => {
+    const [coupons, setCoupons] = useState([]);
+
+    useEffect(() => {
+      fetchCoupons()
+        .then((res) => {
+          setCoupons(res || []);
+        })
+        .catch((error) => {
+          console.error('Error fetching products:', error);
+          setCoupons([]);
+        });
+    })
   return (
     <div className="col-12">
         <div className="card">
@@ -21,26 +34,28 @@ const CustomizedDataTableSection = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>
-                                    <div className="table-product-card">
-                                        <div className="part-img" style={{height: '80px', width: '80px'}}>
-                                            <img src="assets/images/product-img-3.jpg" alt="Image"/>
+                            {coupons.map((coupon) => (
+                                <tr key={coupon.id}>
+                                    <td>
+                                        <div className="table-product-card">
+                                            <div className="part-img" style={{height: '80px', width: '80px'}}>
+                                                <img src="assets/images/coupon.jpg" alt="Image"/>
+                                            </div>
                                         </div>
-                                    </div>
-                                </td>
-                                <td>CSJ0158</td>
-                                <td>12</td>
-                                <td>$560</td>
-                                <td>12/24/2023 01:05 PM</td>
-                                <td>
-                                    <div className="btn-box">
-                                        <button><i className="fa-light fa-eye"></i></button>
-                                        <button><i className="fa-light fa-pen"></i></button>
-                                        <button><i className="fa-light fa-trash"></i></button>
-                                    </div>
-                                </td>
-                            </tr>
+                                    </td>
+                                    <td>{coupon.code}</td>
+                                    <td>{coupon.discount}</td>
+                                    <td>{coupon.expirationDate}</td>
+                                    <td>{coupon.status}</td>
+                                    <td>
+                                        <div className="btn-box" >
+                                            <button style={{border: 'none',backgroundColor: 'transparent'}}><i className="fa-light fa-eye"></i></button>
+                                            <button style={{border: 'none',backgroundColor: 'transparent'}}><i className="fa-light fa-pen"></i></button>
+                                            <button style={{border: 'none',backgroundColor: 'transparent'}} onClick={() => deleteCoupon(coupon._id)}><i className="fa-light fa-trash"></i></button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            ))}
                         </tbody>
                     </table>
                 </OverlayScrollbarsComponent>       

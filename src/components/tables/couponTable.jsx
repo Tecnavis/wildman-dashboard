@@ -140,12 +140,11 @@ const CustomizedDataTableSection = () => {
           </OverlayScrollbarsComponent>
 
           {/* Edit Coupon Modal */}
-         {/* Edit Coupon Modal */}
 {isEditing && (
   <div className="modal-overlay">
     <div className="modal-container">
       <div className="modal-header">
-        <h5 className="modal-title">Edit Coupon</h5>
+        <h5 style={{ color: '#464646',textAlign: 'center'}}>Edit Coupon</h5>
         <button
           className="modal-close-btn"
           onClick={() => setIsEditing(false)}
@@ -157,9 +156,9 @@ const CustomizedDataTableSection = () => {
         {editCouponData && (
           <form>
             <div className="form-group">
-              <label>Code</label>
               <input
                 type="text"
+                placeholder='Coupon Code'
                 value={editCouponData.code}
                 onChange={(e) =>
                   setEditCouponData({ ...editCouponData, code: e.target.value })
@@ -167,9 +166,9 @@ const CustomizedDataTableSection = () => {
               />
             </div>
             <div className="form-group">
-              <label>Discount</label>
               <input
                 type="number"
+                placeholder='Discount'
                 value={editCouponData.discount}
                 onChange={(e) =>
                   setEditCouponData({
@@ -180,8 +179,8 @@ const CustomizedDataTableSection = () => {
               />
             </div>
             <div className="form-group">
-              <label>Expiration Date</label>
               <input
+                placeholder="Expiration Date"
                 type="date"
                 value={editCouponData.expirationDate}
                 onChange={(e) =>
@@ -193,7 +192,6 @@ const CustomizedDataTableSection = () => {
               />
             </div>
             <div className="form-group">
-              <label>Products</label>
               <select
                 multiple
                 value={editCouponData.products}
@@ -214,7 +212,6 @@ const CustomizedDataTableSection = () => {
               </select>
             </div>
             <div className="form-group">
-              <label>Status</label>
               <select
                 value={editCouponData.status}
                 onChange={(e) =>

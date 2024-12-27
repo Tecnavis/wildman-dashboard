@@ -336,7 +336,7 @@ const EditProductModal = ({ productId, show, onClose, onSave }) => {
               className="form-control"
             />
           </div>
-          <div className="mb-3">
+          {/* <div className="mb-3">
             <label>Size</label>
             <input
               type="text"
@@ -345,7 +345,7 @@ const EditProductModal = ({ productId, show, onClose, onSave }) => {
               name="size"
               className="form-control"
             />
-          </div>
+          </div> */}
           
           <div className="mb-3">
             <label>Weight</label>

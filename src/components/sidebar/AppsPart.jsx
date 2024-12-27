@@ -189,6 +189,11 @@ const AppsPart = () => {
               </NavLink>
             </li>
             <li className="sidebar-dropdown-item">
+              <NavLink to="/coupon" className="sidebar-link" onClick={handleSubNavLinkClick}>
+                Coupons
+              </NavLink>
+            </li>
+            <li className="sidebar-dropdown-item">
               <NavLink to="/review" className="sidebar-link" onClick={handleSubNavLinkClick}>
                 Reviews
               </NavLink>

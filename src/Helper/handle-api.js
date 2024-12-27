@@ -4,6 +4,17 @@ import Swal from "sweetalert2";
 // export const  URL = `${process.env.BASE_URL}`;
 export const  URL = `http://localhost:3000`;
 // export const  URL = `https://api.wildmanpremium.com`;
+//create coupon 
+export const createCoupon = async (coupon) => {
+  if (coupon.applyToAll) {
+    coupon.products = []; // Clear specific products for "All Products"
+  }
+
+  const response = await axios.post(`${URL}/coupon`, coupon);
+  alert("Coupon created successfully!");
+  return response.data;
+};
+
 //update about
 export const updateAbout = async (id, about) => {
   const response = await axios.put(`${URL}/about/${id}`, about);

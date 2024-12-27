@@ -67,6 +67,7 @@ import PurchaseForm from "./components/forms/Purchaseform"
 import Banner from "./components/forms/banner"
 import Review from "./components/tables/reviews"
 import About from "./components/tables/about"
+import CouponTable from "./components/tables/couponTable"
 function App() {
   
   return (
@@ -76,6 +77,7 @@ function App() {
           <Route path="/dashboard" element={<Dashboard/>}/>
           <Route path="/review" element={<Review/>}/>
           <Route path="/aboutcompany" element={<About/>}/>
+          <Route path="/coupon" element={<CouponTable/>}/>
           <Route path="/banner" element={<Banner/>}/>
           <Route path="/createform" element={<CreateForm/>}/>
           <Route path="/purchaseform" element={<PurchaseForm/>}/>

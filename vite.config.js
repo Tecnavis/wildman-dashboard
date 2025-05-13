@@ -8,4 +8,9 @@ export default defineConfig({
     host: '0.0.0.0',
     port: 8867,
   },
+    preview: {
+    host: '0.0.0.0',
+    port: 8867,
+    allowedHosts: ['wildman-dashboard.onrender.com'], 
+  },
 })
